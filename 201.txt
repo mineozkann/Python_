@@ -1,0 +1,53 @@
+#Turkcell gelecegi yazanlar 201 ders notları
+sayi1 = 7
+sayi2 = 8
+print(sayi1)
+print (sayi2)
+ 
+x= 8
+y= 4
+a= 4
+b= 2
+print(x==y) 
+print(y==a)
+print(a!=y)
+print(x!=a)
+
+print (x>y)
+print(y>a)
+
+print(y<b)
+print(b<x)
+
+print("{} > {} sorusunun cevabı {}".format(x,y,x>y))
+
+print(a >= y) #eşit mi ya da büyük mü?
+print(a <=b)
+
+# or mantıksal operatöründe iki secenekten birisinin dogru olması sonucu da dogru yapar
+# and mantıksal ifadesinde iki sececek de dogru olursa dogru kabul ederiz
+
+a , b = 10 ,15
+c, d, e= 20, 25 ,30
+print(a<15 or b<20)
+print("{} or {} = {}".format(a<15, b<10, a<15 or b<10))
+print(a<15 and b>10)
+print("{} and {} = {}".format(a<15, b>10, a<15 and b>10))
+print("{} and {} = {}".format(c<15, d>10, c<15 and d>10))
+
+import sys
+print(sys.getsizeof(5)) #kaç bayt yer kapladıgı
+print(28*8)             #kaç bit yer kapladıgı
+
+x=5
+y=5.0
+print(x==y)         #true
+print(x is y)       #false
+print(x!=y)         #false
+print(x is not y)   #true
+
+isim= None #elimizde bilgi olöadıgında kullanırız
+x=10          #int olur
+y = int(13.2) # int yapar
+z = 23.5 
+print ( type(z)) #fload 
