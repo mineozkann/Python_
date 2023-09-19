@@ -1,0 +1,74 @@
+#bir borsadaki 5 tane değeri ismi-anlik değeri (sözlük) şeklinde çekip bir liste içerisinde konsolda göstermek
+
+# CMD ayarlanabilirin isteklerini ve BeautifulSoup modüllerini indiriyoruz
+
+içe aktarma istekleri
+bs4'ten BeautifulSoup'u içe aktar
+tkinter'ı tk olarak içe aktar
+
+
+
+# kütüphaneleri tanımlıyoruz
+
+url = " https://www.doviz.com/ "
+r = request.get(url)
+çorba = GüzelSoup(r.content, "html.parser")
+
+veri = çorba.find_all ( "span" , {"data-socket-key":"USD"}).text
+data2 = çorba.find_all ( "span" , {"data-socket-key":"EUR"}).text
+data3 = çorba.find_all ( "span" , {"data-socket-key":"gram-altin"}).text
+data4 = çorba.find_all ( "span" , {"data-socket-key":"GBP"}).text
+data5 = çorba.find_all ( "span" , {"data-socket-key":"XU100"}).text
+
+#Çekmek verileri incele'den özel isimlerini öğrenerek geçiriyoruz
+
+window = tk.Tk() #pencere oluşturuyoruz
+window.geometry("500x300") #pencerenin boyutlarını ayarlıyoruz
+window.title("BORSA") #pencere başlığını belirliyoruz
+
+Dolar = tk.Label(window , text ="Dolar: " , font="arial 15")
+Dolar.pack()
+Dolar.place(x=40, y=50) #Dolar yazısını belirli yazı biçimini ayarlıyoruz
+
+Dolar_degeri= tk.Label(pencere, metin=veri, yazı tipi= "arial 15", )
+Dolar_degeri.pack()
+Dolar_degeri.place(x=200,y=50) #İnternetten çekeceğimiz veriyi ayarlıyoruz
+
+
+Euro = tk.Label(window , text ="Euro: " , font="arial 15")
+Euro.pack()
+Euro.yer(x=40, y=80)
+
+Euro_degeri= tk.Label(pencere, metin=veri2 , yazı tipi= "arial 15", )
+Euro_degeri.pack()
+Euro_degeri.place(x=200,y=80)
+
+
+Gram_Altin = tk.Label(window , text ="Gram Altın: " , font="arial 15")
+Gram_Altin.pack()
+Gram_Altin.place(x=40, y=110)
+
+Gram_Altin_degeri= tk.Label(pencere, metin=veri3 , yazı tipi= "arial 15", )
+Gram_Altin_degeri.pack()
+Gram_Altin_degeri.place(x=200,y=110)
+
+
+Sterlin = tk.Label(window , text ="Sterlin: " , font="arial 15")
+Sterling.pack()
+Sterlin.place(x=40, y=140)
+
+Sterlin_degeri= tk.Label(pencere, metin=veri4 , yazı tipi= "arial 15" ,)
+Sterlin_degeri.pack()
+Sterlin_degeri.place(x=200,y=140)
+
+
+Bist= tk.Label(window , text ="Borsa İstanbul: " , font="arial 15")
+Bist.pack()
+Bist.place(x=40, y=170)
+
+Bist_degeri= tk.Label(pencere, metin=veri5 , yazı tipi= "arial 15", )
+Bist_degeri.pack()
+Bist_degeri.place(x=200,y=170)
+
+
+window.mainloop()  
