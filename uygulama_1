@@ -1,0 +1,142 @@
+Select
+*                                                #* ile tüm tablo gelir, veya colums'dan sürükleyebiliriz
+From
+Etrade.dbo.customer            #seçili sayfamızın içindeysek sadece tablo adını girmemiz yeter
+
+
+INSERT KOMUTU : tabloya ekleme kayıt yapmak
+
+Insert into tabloadı
+Kolonlar
+Values
+Değerler
+
+Insert into
+Customer
+(customername, city, district, birthdate, gender)
+Values
+('SİNEM KAYA' , 'KOCAELİ' , 'MERKEZ' , '2000-04-05' , 'K')
+
+UPDATE KOMUTU: değiştirme
+
+Update tabloadı
+Set Column1 = Value1, Column2 = Value2…
+
+Update customer
+Set age = Datediff(Year,Birthdate,Getdate())
+
+Update customer Set age = age - 1
+
+DELETE KOMUTU:
+
+Delete From tabloadı
+
+Select * Into customeryedek From customer
+
+Delete From customeryedek 
+              
+##delete kalıcı olarak silmez kurtarmanın yolları vardır
+##delete ile silinmiş tabloya yeni veriler girdiğimizde id olarak öncekinden devam eder
+
+Select * From customeryedek
+
+Truncate Table customeryedek
+#kalıcı silme işlemi
+
+WHERE ŞARTLARI:
+
+Select * from tabloadı
+Where column1=value1
+
+#Veriler arasından istediklerimizi çağırmamıza yarar
+#delete ve update için de geçerli
+
+#between : arasında demek tarihlerde kullanılır
+#like : ile başlar,biter,içerir
+#in : içindedir
+#<> eşit değildir demek
+
+Select * from customer
+Where ID = 5
+Where city = 'Ankara'
+Where birthday = '20022301'
+Where city = 'Ankara' and District = 'Yenimahalle'
+Where city = 'Ankara' and District <> 'Yenimahalle'
+Where age >20
+Where birthday >= '2000'
+Where age between  19 and 20
+Where between birthday '19900101' and '20000101'
+Where customername like 'Mine'                         #yanlış kullanım
+#customername hem ad hem soyad içeriyor
+Where customername like 'Mine%'               
+ #sonuna % koymak başlayan anlamı katar
+Where customername like '%öz%'
+#öz içeren verileri getirir (özkan mesela)
+Where customername like '%coşkun'
+#sonu coşkun ile biten veriler
+Where city = 'Ankara' 
+And district in ('Yenimahalle' , 'Batıkent')
+Where city = 'Ankara' 
+And district not in ('Yenimahalle' , 'Batıkent')          # dışındakileri getir
+
+Update customer set gender = 'erkek'
+Where gender = 'E'
+#E yazanları erkek olarak güncelleme
+
+
+DISTINCT KOMUTU:
+
+Select distinct column1,column2
+From tabloadı
+#mesela city seçtiğimizde bize girilen şehirleri birer tane getirir
+
+Select Distinct city From customer
+#city çeşitlerini getirir
+
+Select Distinct city , District From customer
+#şehirler ve ilçelerini
+
+Select Distinct city , district 
+From customer Where city = 'ankara'
+#ankara ve ilçelerini
+
+ORDER BY KOMUTU:
+#sıralamada kullanılır
+
+Select column1 , column2…
+From tabloadı
+Order By column1 ASC , column2 DESC
+
+Select * From customer
+Order By customername             #isimlere göre sıralar
+
+Select * From customer
+Order By city , customername   
+#önce city sonra isme göre sıralama yapar
+
+Select * From customer
+Order By ASC city , age DESC
+#city a'dan z'ye yaş ise büyükten küçüğe
+#ilk yazılana ASC yazmasak da otomatik ASC algılar
+
+Select * From customer
+Order By 2
+#2. sıradaki yanı city'ye göre sıralar
+
+TOP KOMUTU: 
+
+Select Top 5 * From customer        #ilk 5 satır
+
+Select Top 5 * From customer
+Order By customername                 #isme göre ilk 5 isim
+
+Select Top 5 * From customer
+Where city = 'İstanbul'
+Order By customername                 #istanbuldan isme göre ilk 5
+
+
+Select Top 5 Percent * From customer 
+#percent ile yüzdeliği ifade ederiz
+
+
+
