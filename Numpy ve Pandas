@@ -1,0 +1,211 @@
+#################
+#NUMPY
+
+#listelerden farklı olarak vektörel ve istatistiksel işlem kolaylığı sağlar.
+#Normalde döngülerle yapılacak işlemleri tek komutla yapmayı sağlar
+#Verimli veri saklar ve daha hızlı işlemler yapar
+#Tüm verileri tek tipte tutar
+
+import numpy as np
+
+a = np.array([2, 3, 4])
+b = np.array([5, 6, 7])
+
+a * b
+
+#0 dizisi oluşturmak
+np.zeros(10 , dtype = int)
+
+#rastgele sayılardan dizi oluşturmak
+np.random.randint(0 , 10 , size = 20)
+
+#belli bir dağılıma göre dizi oluşturmak
+np.random.normal(10 , 4 , size = 5)        #ortalama, sapma , boyut
+np.random.normal(10 , 4 , size = (2,2))    #2x2 boyutlarında matris
+
+#belli bir sayıda artan seri oluşturma
+v = np.arange(0, 10, 2)
+
+a = np.random.randint(0 , 10 , size = 5)
+
+a.ndim          #boyut sayısı
+a.shape         #boyut bilgisi
+a.size          #toplam eleman sayısı
+a.dtype         #array veri tipi
+
+
+#Boyut değiştirme
+
+a = np.random.normal(0 , 10 , size = 9)
+a = a.reshape(3 , 3)
+print(a)
+
+#Dizi içerisinde koşullu ifaleder
+
+a[a < 3]
+a[a != 3]
+
+# 5*x1 + x2 = 12
+# x1 + 3x2 = 10
+
+a = np.array([[5, 1] , [1, 3]])
+b = np.array([12, 10])
+
+np.linalg.solve(a, b)
+
+#################
+#PANDAS
+
+#Veri manipülasyonu, veri analizi
+
+import pandas as pd
+
+s = pd.Series([10, 77, 9, 4, 5])
+
+s.index      #RangeIndex(start=0, stop=5, step=1)
+s.ndim       #Boyut bilgisi (tek boyutlu olur)  
+
+#Veri Okutma
+
+df = pd.read_csv("")    #yol yapıştırılır.
+
+#read_spss, read_sas, reas_excel gibi fonksiyonlar da kullanılabilir.
+
+#Veriye hızlı bakış 
+
+import seaborn as sns
+
+df = sns.load_dataset("titanic")  #seaborndan örnek veri çekelim
+
+df.head
+df.tail
+df.shape   #Boyut bilgisi 
+df.info()  #Değişkenlerin tipleri, kaç tane değer olduğu gibi özellikleri verir
+df.columns #Değişkenlerin isimleri
+df.describe().T  #Değişkenlerin özet istatistiklerine erişmek için
+df.isnull().values.any()  #Veri setinde hiç eksik değer var mı? (True)
+df.isnull().sum()  #Değişkenlere göre kaç adet eksit değer olduğunun bilgisi
+df["sex"].value_counts()  #katregorik değişkenler için kategorilere göre değer sayıları
+
+
+# Seçim işlemleri
+df = sns.load_dataset("titanic") 
+
+delete = [1, 3, 5]
+df.drop(delete, axis=0)   #kalıcı değil
+#kalıcı dilme işlemi içim inplace=T eklenmelidir.
+
+#Değişkeni indexe çevirme işlemi 
+df.index = df["age"]
+
+
+# Değişkenler seçimi
+df.age.head()  
+df["age"].head()
+
+#iLoc : integer based selection
+
+df.iloc[1:3]     #1 ve 2. satırlardaki değerler
+df.iloc[1:5 , 2]   #2. değişken için 1,2,3 ve 4. değerler
+df.iloc[3:5 , 1:3]   # 1. ve 2. değişken için 3 ve 4. değerler
+
+#Loc : label based selection
+
+df.loc[1:3]  # 1,2 ve 3. satırlar
+df.loc[1:3 , "age"]  #seçilen değişkene göre
+df.loc[5 , "alive"]
+
+# Koşullu seçim işlemleri
+
+df[df["age"] > 50].head()   
+df["age"][df["age"] > 50].head()   
+
+df["alive"].loc[df["age"] > 50].count()  #sayısına erişmek için
+
+df.loc[(df["age"] > 50) & (df["sex"] == "female") & (df["alive"] == "yes"), ["age", "sex", "alive"]].head()
+
+
+# Toplulaştırma İşlemleri
+
+df["age"].mean()
+
+df.groupby("sex")["age"].mean()  #Cinsiyete göre yaş ortalamaları
+
+df.groupby("sex").agg({"age": ["mean", "sum", "max", "min"]})   #birden fazla özet istatistik hesaplatma
+
+df.groupby("sex").agg({"age": ["mean"], "survived": ["mean"]})   
+#cinsiyet kırılımında yaşa ve hayatta kalmaya ait bilgiler
+#survived kategorik değişkeninin ortalamasını almamız % lik olarak yorumlayabilmemizi sağlar.
+
+df.groupby(["sex", "embark_town"]).agg({"age": ["mean"], "survived": ["mean"]})
+#iki kırılımda yaş ve hayatta kalma yüzdelikleri
+
+df.groupby(["sex", "embark_town", "class"]).agg({"age": ["mean"], "survived": ["mean"]})
+#frekans bilgisi elimizde olmadığı için sağlıklı yorum yapılamaz
+
+df.groupby(["sex", "embark_town", "class"]).agg({"age": ["mean"], "survived": ["mean"], "sex": ["count"]})
+#son olarak cinsiyet değişkeninin saydırılması istenir
+
+
+# Pivot Table işlemleri
+
+df.pivot_table("survived", "sex", "embarked")
+#1. kesişimlerde ortalamasını görmek istediğimiz değişken
+#2. satırdaki değişken (index)
+#3. sütundaki değişken 
+
+df.pivot_table("age", "class", "sex")
+#default olarak ortalama hesaplatır.
+
+df.pivot_table("age", "class", "sex",  aggfunc = "std")
+
+df.pivot_table("age", "embarked", ["sex", "class"])
+#sütunlarda cinsiyete ek olarak sınıflarda da kırılım yaşanır
+
+#yaş sayısal değişkenini kategorik hale getirerek pivot tablea ekleme
+
+df["new_age"] = pd.cut(df["age"], [0, 10, 18, 25, 40, 90])
+
+df.pivot_table("survived", ["sex", "new_age"], "embarked")
+#satırlarda cinsiyetten sonra yaş kategorilerine göre kırılım yaşandı.
+
+
+# Apply ve Lambda
+
+#apply tek satırda fonksiyon işlemleri
+
+df["age2"] = df["age"]*2
+df["age3"] = df["age"]*3
+
+#yaş değişkenlerini seçip 10'a bölme
+df[["age", "age2", "age3"]].apply(lambda x: x / 10).head()
+
+#"age" ifadesi içerenleri seçip 10'a böldürme işlemi
+
+#standarlaştırma işlemi
+df.loc[:, df.columns.str.contains("age")].apply(lambda x: (x - x.mean()) / x.std()).head()
+
+#Dışarıda oluşturulmuş bir fonksiyon direkt apply() içerisine yazılabilir.
+
+#Yapılan işlemleri kaydetme
+#df[:, ["age", "age2", "age3"]] =
+#df.loc[:, df.columns.str.contains("age")]=
+
+
+# Birleştirme (Join) işlemleri
+
+import numpy as np
+
+m = np.random.randint(1, 30, size=(5, 3))
+
+df1 = pd.DataFrame(m , columns=["var1", "var2", "var3"])  #sıfırdan data frame oluşturma
+
+df2 = df1 + 99
+
+pd.concat([df1, df2])   #index numaralarında sıkıntı oluşur
+pd.concat([df1, df2], ignore_index=True)
+
+#Merge fonksiyonu ile birleştirme işlemi
+#iki veri kümesinde de ortak olan değişkene göre birleştirme yapar
+#pd.merge(df1, df2, on="ortak değişken")   biçiminde kullanılır
+
